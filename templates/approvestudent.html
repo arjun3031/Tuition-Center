@@ -1,0 +1,506 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Approve student</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            overflow-x: hidden; 
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background: url("{% static 'images/studenthome.avif' %}") no-repeat center center/cover;
+
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: white;
+            padding: 0 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            height: 80px; 
+            width: 100%; 
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            font-size: 45px;
+            color: black;
+            margin-right: 14px;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo h1 {
+            color: rgb(61, 191, 242);
+            font-size: 34px;
+            margin-bottom: 5px;
+        }
+
+        .logo p {
+            font-size: 12px;
+            color: grey;
+        }
+
+        .navbar-links {
+            display: flex;
+            list-style: none;
+            align-items: center;
+            margin-left: auto; 
+            padding-left: 30px; 
+            margin-right: -30px;
+        }
+
+        .navbar-links li {
+            margin-left: 30px;
+        }
+
+        .navbar-links a {
+            text-decoration: none;
+            color: black;
+            font-size: 16px;
+            padding: 15px 0;
+            line-height: 60px;
+            transition: color 0.3s;
+        }
+
+        .navbar-links a:hover {
+            color: rgb(61, 191, 242);
+        }
+
+        .navbar-links .join-now {
+            background-color: rgb(210, 51, 51);
+            padding: 10px 30px;
+            color: white;
+            font-weight: 300;
+            display: flex;
+            align-items: center;
+            height: 80px;
+            margin-left: 0;
+
+        }
+
+        .navbar-links .join-now i {
+            margin-left: 10px;
+            font-size: 12px;
+
+        }
+
+        .navbar-links .join-now:hover {
+            background-color: black;
+            color: white;
+        }
+
+        .navbar-links.toggle {
+            display: none;
+            flex-direction: column;
+            align-items: flex-start;
+            width: 100%;
+        }
+
+        .navbar-links.active {
+            display: flex;
+        }
+
+        .toggle-btn {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+    nav {
+        flex-direction: row;
+        align-items: center;
+        height: auto;
+        padding: 10px;
+    }
+
+    .navbar-links {
+        display: none; 
+        flex-direction: column; 
+        width: 100%; 
+        position: absolute; 
+        top: 80px; 
+        left: 0; 
+        background-color: white; 
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin: 0; 
+        padding-left: 0; 
+    }
+
+    .navbar-links.active {
+        display: flex; 
+    }
+
+    .navbar-links li {
+        margin-left: 0; 
+        margin-top: 10px; 
+        width: 100%; 
+        text-align: left; 
+    }
+
+    .navbar-links a {
+        padding: 10px 20px; 
+        width: 100%; 
+    }
+
+    .navbar-links .join-now {
+        padding: 10px 60px; 
+        width: 100%; 
+        justify-content: center; 
+        margin-top: 10px; 
+        margin-left: 0; 
+    }
+
+    .toggle-btn {
+        display: block; 
+        color: black; 
+        margin-left: auto; 
+    }
+}
+        .container {
+    margin: 20px auto;
+    max-width: 1200px; 
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%; 
+}
+
+.table-responsive {
+    width: 100%;
+    overflow-x: hidden; 
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+    font-size: 16px;
+    text-align: center;
+}
+
+th, td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: rgba(23, 112, 214, 0.9);
+    color: white;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+img {
+    max-width: 100px;
+    border-radius: 50%;
+}
+
+.btn-danger .fa-trash {
+    color: #fff;
+    font-size: 16px;
+}
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+        max-width: 90%;
+    }
+
+    table {
+        font-size: 14px;
+        
+    }
+
+    th, td {
+        padding: 10px;
+    }
+
+    img {
+        max-width: 70px; 
+    }
+
+    .table-responsive {
+        -webkit-overflow-scrolling: touch;
+        overflow-x: auto;
+    }
+}
+
+@media (max-width: 576px) {
+    table {
+        font-size: 12px; 
+    }
+
+    th, td {
+        padding: 8px;
+    }
+}
+        footer {
+            background-color: rgba(23, 112, 214, 0.9);
+            color: white;
+            text-align: center;
+            padding: 10px;
+            width: 100%;
+            margin-top: auto; 
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            width: 100%; 
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-columns {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .footer-column {
+            flex: 1;
+            margin: 10px 20px;
+            min-width: 200px;
+        }
+
+        .footer-column h4 {
+            margin-bottom: 15px;
+            font-size: 18px;
+            color: rgb(61, 191, 242);
+        }
+
+        .footer-column p, .footer-column ul {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #ccc;
+        }
+
+        .footer-column ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            text-decoration: none;
+            color: white;
+            transition: color 0.3s;
+        }
+
+        .footer-column ul li a:hover {
+            color: rgb(61, 191, 242);
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .social-icons a {
+            color: white;
+            font-size: 20px;
+            transition: color 0.3s;
+        }
+
+        .social-icons a:hover {
+            color: rgb(61, 191, 242);
+        }
+
+        .footer-bottom {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #ccc;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #555;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .footer-columns {
+                flex-direction: column;
+                text-align: left;
+            }
+        }
+        .notification-badge {
+            background-color: red;
+            color: white;
+            font-size: 10px;
+            border-radius: 50%;
+            padding: 3px 7px;
+            position: relative;
+            top: -10px;
+            left: 10px;
+            font-weight: bold;
+        }
+        
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            <div class="logo-text">
+                <h1>Academia</h1>
+                <p>Learning Portal</p>
+            </div>
+        </div>
+
+        <span class="toggle-btn" id="toggle-btn">
+            <i class="fas fa-bars"></i>
+        </span>
+
+        <ul class="navbar-links" id="navbar-links">
+            <li><a href="{% url 'adminhome' %}" class="active">ADMIN HOME</a></li>
+            <li>
+                <a style="font-weight: 300;" href="{% url 'managestudent' %}">
+                    MANAGE STUDENT
+                    {% if student_pending_count > 0 %}
+                        <span class="notification-badge">{{ student_pending_count }}</span>
+                    {% endif %}
+                </a>
+            </li>
+            <li><a style="font-weight: 300;" href="{% url 'managecourse' %}">MANAGE COURSES</a></li>
+
+            <li>
+                <a style="font-weight: 300;" href="{% url 'manageteacher' %}">
+                    MANAGE TEACHER
+                    {% if teacher_pending_count > 0 %}
+                        <span class="notification-badge">{{ teacher_pending_count }}</span>
+                    {% endif %}
+                </a>
+            </li>
+           
+            <li><a href="{% url 'logout' %}" class="join-now">LOGOUT</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>First name</th>
+                        <th>Last name</th>
+                        <th>Email id</th>
+                        <th>Mobile Number</th>
+                        <th>Address</th>
+                        <th>Image</th>
+                        <th>Accept</th>
+                        <th>Reject</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in pstudents %}
+                    <tr>
+                        <td>{{ i.s_user.first_name }}</td>
+                        <td>{{ i.s_user.last_name }}</td>
+                        <td>{{ i.s_user.email }}</td>
+                        <td>{{ i.phone }}</td>
+                        <td>{{ i.address }}</td>
+                        <td><img src="{{ i.image.url }}" alt="Student Image"></td>
+                        <td><a href="{% url 'acceptstudent' i.id %}" style="color: green;text-decoration: none;font-weight: 500;">ACCEPT</a></td>
+                        <td><a href="{% url 'rejectstudent' i.id %}" style="color: rgb(218, 58, 0);text-decoration: none;">REJECT</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-columns">
+                <div class="footer-column">
+                    <h4>About Us</h4>
+                    <p>We are dedicated to providing quality education.</p>
+                </div>
+                <div class="footer-column">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#courses">Courses</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Follow Us</h4>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Academia. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const links = document.querySelectorAll('.navbar-links a');
+        const toggleBtn = document.getElementById('toggle-btn');
+        const navbarLinks = document.getElementById('navbar-links');
+
+        links.forEach(link => {
+            link.addEventListener('click', () => {
+                links.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+            });
+        });
+
+        toggleBtn.addEventListener('click', () => {
+            navbarLinks.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

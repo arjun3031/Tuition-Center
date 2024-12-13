@@ -1,0 +1,804 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher attendance view</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+      * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: Arial, sans-serif;
+    overflow-x: hidden;
+    background: url("{% static 'images/teacherhome.jpg' %}") no-repeat center center/cover;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    min-height: 100vh; 
+    display: flex;
+    flex-direction: column;
+}
+
+
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: white;
+            padding: 0 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            height: 80px; 
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            font-size: 45px;
+            color: black;
+            margin-right: 14px;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo h1 {
+            color: rgb(61, 191, 242);
+            font-size: 34px;
+            margin-bottom: 5px;
+        }
+
+        .logo p {
+            font-size: 12px;
+            color: grey;
+        }
+
+        .navbar-links {
+            display: flex;
+            list-style: none;
+            align-items: center;
+            margin-left: auto; 
+            padding-left: 30px; 
+            margin-right: -30px; 
+        }
+
+        .navbar-links li {
+            margin-left: 30px;
+        }
+
+        .navbar-links a {
+            text-decoration: none;
+            color: black;
+            font-size: 16px;
+            padding: 15px 0;
+            line-height: 60px;
+            transition: color 0.3s;
+        }
+
+        .navbar-links a:hover {
+            color: rgb(61, 191, 242);
+        }
+
+        .navbar-links .join-now {
+            background-color: rgb(210, 51, 51);
+            padding: 10px 30px;
+            color: white;
+            font-weight: 300;
+            display: flex;
+            align-items: center;
+            height: 80px;
+            margin-left: 0; 
+        }
+
+        .navbar-links .join-now i {
+            margin-left: 10px;
+            font-size: 12px;
+        }
+
+        .navbar-links .join-now:hover {
+            background-color: black;
+            color: white;
+        }
+
+        .navbar-links a.active {
+            color: rgb(61, 191, 242);
+        }
+
+        .navbar-links.toggle {
+            display: none;
+            flex-direction: column;
+            align-items: flex-start;
+            width: 100%;
+        }
+
+        .navbar-links.active {
+            display: flex;
+        }
+
+        .toggle-btn {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+    nav {
+        flex-direction: row;
+        align-items: center;
+        height: auto;
+        padding: 10px;
+    }
+
+    .navbar-links {
+        display: none; 
+        flex-direction: column; 
+        width: 100%; 
+        position: absolute; 
+        top: 80px; 
+        left: 0; 
+        background-color: white; 
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin: 0; 
+        padding-left: 0; 
+    }
+
+    .navbar-links.active {
+        display: flex; 
+    }
+
+    .navbar-links li {
+        margin-left: 0; 
+        margin-top: 10px; 
+        width: 100%; 
+        text-align: left; 
+    }
+
+    .navbar-links a {
+        padding: 10px 20px; 
+        width: 100%; 
+    }
+
+    .navbar-links .join-now {
+        padding: 10px 60px; 
+        width: 100%; 
+        justify-content: center; 
+        margin-top: 10px; 
+        margin-left: 0; 
+    }
+
+    .toggle-btn {
+        display: block; 
+        color: black; 
+        margin-left: auto; 
+    }
+}
+
+        .dashboard {
+    flex: 1; 
+}
+        h2 {
+            color: rgb(61, 191, 242);
+            margin-bottom: 20px;
+            text-align: center; 
+        }
+        
+        .card {
+            background: rgb(255, 255, 255);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+            padding: 20px;
+            margin-bottom: 30px;
+            max-width: 400px;
+            width: 100%; 
+            transition: transform 0.2s, box-shadow 0.2s; 
+        }
+        
+        .card:hover {
+            transform: translateY(-5px); 
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); 
+        }
+        
+        .card h3 {
+            color: rgb(14, 86, 114); 
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 23PX;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+        
+        .card p {
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; 
+    color: #2b2b2b; 
+    line-height: 1.6; 
+    text-align: center; 
+    font-size: 16px;
+    margin-top: 10px; 
+}
+
+h2 {
+    font-size: 29px; 
+    color: rgb(56, 169, 184); 
+    margin-bottom: 60px; 
+    text-align: center;
+    text-transform: uppercase; 
+    letter-spacing: 1.8px; 
+    transition: color 0.3s ease; 
+    text-shadow: 2px 2px 1px rgb(0, 0, 0); 
+    margin-top: 55px;
+
+}
+
+h2:hover {
+    color: rgb(18, 113, 142);
+}
+
+
+
+
+        @media (max-width: 768px) {
+            .dashboard {
+                padding: 10px; 
+            }
+        
+            .card {
+        max-width: 90%; 
+        margin: 10px 0; 
+        margin-bottom: 10px; 
+    }
+        
+            h2 {
+                font-size: 24px; 
+            }
+        
+            .card h3 {
+                font-size: 20px; 
+            }
+        
+            .card p {
+                font-size: 14px;
+            }
+        }
+        
+        
+        footer {
+    background-color: #333;
+    color: white;
+    padding: 40px 20px;
+    text-align: center;
+    width: 100%;
+    clear: both;
+    margin-top: auto; 
+    position: relative; 
+}
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-columns {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .footer-column {
+            flex: 1;
+            margin: 10px 20px;
+            min-width: 200px;
+        }
+
+        .footer-column h4 {
+            margin-bottom: 15px;
+            font-size: 18px;
+            color: rgb(61, 191, 242);
+        }
+
+        .footer-column p, .footer-column ul {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #ccc;
+        }
+
+        .footer-column ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            text-decoration: none;
+            color: white;
+            transition: color 0.3s;
+        }
+
+        .footer-column ul li a:hover {
+            color: rgb(61, 191, 242);
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .social-icons a {
+            color: white;
+            font-size: 20px;
+            transition: color 0.3s;
+        }
+
+        .social-icons a:hover {
+            color: rgb(61, 191, 242);
+        }
+
+        .footer-bottom {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #ccc;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #555;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .footer-columns {
+                flex-direction: column;
+                text-align: left;
+            }
+        }
+        
+
+        .dashboard {
+            width: 100%;
+            margin: 20px auto;
+            max-width: 1200px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .dashboard:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, .6);
+        }
+
+        h1 {
+            text-align: center;
+            color: #09374b;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        .filter-container {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .filter-form {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .filter-form select, .filter-form input {
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .filter-form select:focus, .filter-form input:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        .filter-form button {
+            background-color: #139382;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .filter-form button:hover {
+            background-color: #0d9599;
+        }
+
+        .attendance-records {
+            margin-top: 20px;
+        }
+
+        .attendance-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #73d1f6;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #3dbff2;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .back-btn:hover {
+            background-color: #2a9bc5;
+        }
+
+        @media (max-width: 768px) {
+            .filter-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .filter-form {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            th, td {
+                font-size: 14px;
+                padding: 6px;
+            }
+
+            .back-btn {
+                font-size: 14px;
+                padding: 8px 16px;
+            }
+            
+        }
+        @media (max-width: 768px) {
+    .filter-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .filter-form {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .student-course-row {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+    .filter-actions {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        justify-content: center;
+        margin-top: 10px;
+    }
+
+    h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    th, td {
+        font-size: 14px;
+        padding: 6px;
+    }
+
+    .back-btn {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+}
+
+.notification-badge {
+    background-color: red;
+    color: white;
+    font-size: 10px;
+    border-radius: 50%;
+    padding: 3px 7px;
+    position: relative;
+    top: -10px;
+    left: 10px;
+    font-weight: bold;
+}
+   
+</style>
+        
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            <div class="logo-text">
+                <h1>Academia</h1>
+                <p>Learning Portal</p>
+            </div>
+        </div>
+
+        <span class="toggle-btn" id="toggle-btn">
+            <i class="fas fa-bars"></i>
+        </span>
+
+        <ul class="navbar-links" id="navbar-links">
+            <li><a style="font-weight: 300;" href="{% url 'adminhome' %}" class="active">ADMIN HOME</a></li>
+            <li>
+                <a style="font-weight: 300;" href="{% url 'managestudent' %}">
+                    MANAGE STUDENT
+                    {% if student_pending_count > 0 %}
+                        <span class="notification-badge">{{ student_pending_count }}</span>
+                    {% endif %}
+                </a>
+            </li>
+            <li><a style="font-weight: 300;" href="{% url 'managecourse' %}">MANAGE COURSES</a></li>
+
+            <li>
+                <a style="font-weight: 300;" href="{% url 'manageteacher' %}">
+                    MANAGE TEACHER
+                    {% if teacher_pending_count > 0 %}
+                        <span class="notification-badge">{{ teacher_pending_count }}</span>
+                    {% endif %}
+                </a>
+            </li>
+
+            <li><a href="{% url 'logout' %}" class="join-now">LOGOUT</a></li>
+        </ul>
+    </nav>
+
+ 
+   <!-- <div class="dashboard">
+    <div class="header">
+    </div>
+
+    <div class="filter-container">
+        <form method="GET" class="filter-form">
+            <select name="student_id" id="student_id" style="width: 200px; height: 40px; margin-right: 10px;">
+                <option value="" selected>Select Student</option>
+                {% for student in students %}
+                    <option value="{{ student.id }}" {% if selected_student and selected_student.id == student.id %}selected{% endif %}>
+                        {{ student.s_user.first_name }}&nbsp{{ student.s_user.last_name }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <select name="course_id" id="course_id" style="width: 200px; height: 40px; margin-right: 10px;">
+                <option value="" selected>Select Course</option>
+                {% for course in courses %}
+                    <option value="{{ course.id }}" {% if selected_course and selected_course.id == course.id %}selected{% endif %}>
+                        {{ course.coursename }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <div style="display: inline-block; margin-right: 10px;">
+                <label for="start_date" style="display: block;">Start Date</label>
+                <input type="date" name="start_date" id="start_date" value="{{ start_date|date:'Y-m-d' }}" style="width: 100px; height: 20px;">
+            </div>
+
+            <div style="display: inline-block; margin-right: 10px;">
+                <label for="end_date" style="display: block;">End Date</label>
+                <input type="date" name="end_date" id="end_date" value="{{ end_date|date:'Y-m-d' }}" style="width: 100px; height: 20px;">
+            </div>
+
+            <button type="submit" style="height: 40px;">SEARCH</button>
+        </form>
+    </div>
+
+    <div class="attendance-records">
+        {% if selected_student or selected_teacher or selected_course %}
+            <h2>
+                Attendance Records
+                {% if selected_student %} for {{ selected_student.s_user.username }}{% endif %}
+                {% if selected_teacher %} by {{ selected_teacher.t_user.username }}{% endif %}
+                {% if selected_course %} in {{ selected_course.coursename }}{% endif %}
+            </h2>
+            <table class="attendance-table">
+                <thead>
+                    <tr>
+                        <th>Student</th>
+                        <th>Date</th>
+                        <th>Course</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if attendance %}
+                        {% for record in attendance %}
+                            <tr>
+                                <td>{{ record.student.s_user.first_name }} &nbsp{{ record.student.s_user.last_name }}</td>
+                                <td>{{ record.date }}</td>
+                                <td>{{ record.course.coursename }}</td>
+                                <td>{{ record.status }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="4" style="text-align:center;">No data found for the selection</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Please select filters to view attendance records</p>
+        {% endif %}
+    </div>
+</div> -->
+
+    
+    
+<div class="dashboard">
+    <div class="header"></div>
+
+    <div class="filter-container">
+        <form method="GET" class="filter-form">
+            <select name="student_id" id="student_id" style="width: 200px; height: 40px; margin-right: 10px;">
+                <option value="" selected>Select Student</option>
+                {% for student in students %}
+                    <option value="{{ student.id }}" {% if selected_student and selected_student.id == student.id %}selected{% endif %}>
+                        {{ student.s_user.first_name }}&nbsp{{ student.s_user.last_name }}
+                    </option>
+                {% endfor %}
+            </select>
+<!-- 
+            <select name="course_id" id="course_id" style="width: 200px; height: 40px; margin-right: 10px;">
+                <option value="" selected>Select Course</option>
+                {% for course in courses %}
+                    <option value="{{ course.id }}" {% if selected_course and selected_course.id == course.id %}selected{% endif %}>
+                        {{ course.coursename }}
+                    </option>
+                {% endfor %}
+            </select> -->
+
+            <div style="display: inline-block; margin-right: 10px;">
+                <label for="start_date" style="display: block;">Start Date</label>
+                <input type="date" name="start_date" id="start_date" value="{{ start_date|date:'Y-m-d' }}" style="width: 100px; height: 20px;">
+            </div>
+
+            <div style="display: inline-block; margin-right: 10px;">
+                <label for="end_date" style="display: block;">End Date</label>
+                <input type="date" name="end_date" id="end_date" value="{{ end_date|date:'Y-m-d' }}" style="width: 100px; height: 20px;">
+            </div>
+
+            <button type="submit" style="height: 40px;">SEARCH</button>
+        </form>
+    </div>
+
+    <div class="attendance-records">
+        <h2>Attendance Records</h2>
+        {% if attendance %}
+            <table class="attendance-table">
+                <thead>
+                    <tr>
+                        <th>Student</th>
+                        <th>Date</th>
+                        <th>Course</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in attendance %}
+                        <tr>
+                            <td>{{ record.student.s_user.first_name }} &nbsp{{ record.student.s_user.last_name }}</td>
+                            <td>{{ record.date }}</td>
+                            <td>{{ record.course.coursename }}</td>
+                            <td>{{ record.status }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <tr>
+                <td colspan="4" style="text-align:center;">No attendance records available</td>
+            </tr>
+        {% endif %}
+    </div>
+</div>
+
+    
+    
+
+
+    
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-columns">
+                <div class="footer-column">
+                    <h4>About Us</h4>
+                    <p>We are dedicated to providing quality education.</p>
+                </div>
+                <div class="footer-column">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#contact">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Follow Us</h4>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="footer-bottom">
+                &copy; 2024 Academia. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const toggleBtn = document.getElementById('toggle-btn');
+        const navbarLinks = document.getElementById('navbar-links');
+
+        toggleBtn.addEventListener('click', () => {
+            navbarLinks.classList.toggle('active');
+        });
+
+
+       
+    </script>
+</body>
+</html>

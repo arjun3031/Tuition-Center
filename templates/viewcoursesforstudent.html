@@ -1,0 +1,645 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student course view</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            overflow-x: hidden;
+            background: url("{% static 'images/studenthome.avif' %}") no-repeat center center/cover;
+            margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    padding-bottom: 100px; 
+
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: white;
+            padding: 0 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            height: 80px; 
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            font-size: 45px;
+            color: black;
+            margin-right: 14px;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo h1 {
+            color: rgb(61, 191, 242);
+            font-size: 34px;
+            margin-bottom: 5px;
+        }
+
+        .logo p {
+            font-size: 12px;
+            color: grey;
+        }
+
+        .navbar-links {
+            display: flex;
+            list-style: none;
+            align-items: center;
+            margin-left: auto; 
+            padding-left: 30px; 
+            margin-right: -30px; 
+        }
+
+        .navbar-links li {
+            margin-left: 30px;
+        }
+
+        .navbar-links a {
+            text-decoration: none;
+            color: black;
+            font-size: 16px;
+            padding: 15px 0;
+            line-height: 60px;
+            transition: color 0.3s;
+        }
+
+        .navbar-links a:hover {
+            color: rgb(61, 191, 242);
+        }
+
+        .navbar-links .join-now {
+            background-color: rgb(210, 51, 51);
+            padding: 10px 30px;
+            color: white;
+            font-weight: 300;
+            display: flex;
+            align-items: center;
+            height: 80px;
+            margin-left: 0; 
+        }
+
+        .navbar-links .join-now i {
+            margin-left: 10px;
+            font-size: 12px;
+        }
+
+        .navbar-links .join-now:hover {
+            background-color: black;
+            color: white;
+        }
+
+        .navbar-links a.active {
+            color: rgb(61, 191, 242);
+        }
+
+        .navbar-links.toggle {
+            display: none;
+            flex-direction: column;
+            align-items: flex-start;
+            width: 100%;
+        }
+
+        .navbar-links.active {
+            display: flex;
+        }
+
+        .toggle-btn {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+    nav {
+        flex-direction: row;
+        align-items: center;
+        height: auto;
+        padding: 10px;
+    }
+
+    .navbar-links {
+        display: none; 
+        flex-direction: column; 
+        width: 100%; 
+        position: absolute; 
+        top: 80px; 
+        left: 0; 
+        background-color: white; 
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin: 0; 
+        padding-left: 0; 
+    }
+
+    .navbar-links.active {
+        display: flex; 
+    }
+
+    .navbar-links li {
+        margin-left: 0; 
+        margin-top: 10px; 
+        width: 100%; 
+        text-align: left; 
+    }
+
+    .navbar-links a {
+        padding: 10px 20px; 
+        width: 100%; 
+    }
+
+    .navbar-links .join-now {
+        padding: 10px 60px; 
+        width: 100%; 
+        justify-content: center; 
+        margin-top: 10px; 
+        margin-left: 0; 
+    }
+
+    .toggle-btn {
+        display: block; 
+        color: black; 
+        margin-left: auto; 
+    }
+}
+
+    
+        
+        
+
+        footer {
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+}
+
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-columns {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .footer-column {
+            flex: 1;
+            margin: 10px 20px;
+            min-width: 200px;
+        }
+
+        .footer-column h4 {
+            margin-bottom: 15px;
+            font-size: 18px;
+            color: rgb(61, 191, 242);
+        }
+
+        .footer-column p, .footer-column ul {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #ccc;
+        }
+
+        .footer-column ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            text-decoration: none;
+            color: white;
+            transition: color 0.3s;
+        }
+
+        .footer-column ul li a:hover {
+            color: rgb(61, 191, 242);
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .social-icons a {
+            color: white;
+            font-size: 20px;
+            transition: color 0.3s;
+        }
+
+        .social-icons a:hover {
+            color: rgb(61, 191, 242);
+        }
+
+        .footer-bottom {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #ccc;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #555;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .footer-columns {
+                flex-direction: column;
+                text-align: left;
+            }
+        }
+        
+
+        .course-form-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s, transform 0.3s;
+            max-width: 400px;
+            width: 100%; 
+            margin: 0 auto 20px; 
+        }
+    
+        .course-form-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+    
+        .form-group {
+            margin-bottom: 15px;
+            margin-bottom: 30px;
+
+        }
+    
+        .form-group input{
+            width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc; 
+    border-radius: 4px;
+    font-size: 16px; 
+    appearance: none; 
+    background-color: #fff; 
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+        }
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc; 
+    border-radius: 4px; 
+    font-size: 16px; 
+    appearance: none; 
+    background-color: #fff; 
+    background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 5"><path fill="rgb(150, 150, 150)" d="M2 0L0 2h4z"/></svg>'); 
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    transition: border-color 0.3s ease; 
+}
+
+.form-group select:focus, 
+.form-group input:focus {
+    border-color: #66afe9; 
+    outline: none; 
+}
+
+    
+.submit-btn {
+    width: 100%; 
+    padding: 10px;
+    background-color: #66afe9; 
+    border: none; 
+    border-radius: 4px;
+    font-size: 16px; 
+    color: white;
+    cursor: pointer; 
+    text-align: center; 
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.submit-btn:hover {
+    background-color: #559fd4; }
+
+    
+        @media (max-width: 768px) {
+            .course-form-container {
+                max-width: 90%; 
+            }
+    
+            .form-group input {
+                font-size: 14px;
+            }
+    
+            .submit-btn {
+                padding: 10px 16px;
+            }
+        }
+        .date-label {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        font-size: 16px;
+        color: #aaa;
+        transition: 0.3s ease;
+        pointer-events: none;
+    }
+   
+    
+    .message-container {
+    width: 100%;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    background: transparent; 
+}
+
+.alert {
+    padding: 15px 20px;
+    margin: 10px 0;
+    border-radius: 5px;
+    font-size: 16px;
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.8); 
+    color: #078d29; 
+    border: 1px solid #ccc; 
+}
+
+
+
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.course-card {
+    background: linear-gradient(to right, rgba(111, 194, 227, 0.9), rgba(255, 255, 255, 0.9));
+    border-radius: 10px;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
+    padding: 17px;
+    width: 100%;
+    max-width: 450px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.course-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.25);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.card-header h2 {
+    font-size: 56px;
+    color: rgb(22, 141, 188);
+}
+
+.card-header .course-duration {
+    font-size: 19px;
+    background-color: rgba(61, 191, 242, 0.15);
+    padding: 5px 15px;
+    border-radius: 5px;
+    color: rgb(3, 30, 41);
+}
+
+.card-body p {
+    font-size: 17px;
+    margin: 30px 0;
+    color: #2c5c7e;
+}
+
+.card-footer {
+    text-align: center;
+}
+
+.enroll-btn {
+    background-color: rgb(61, 191, 242);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.enroll-btn:hover {
+    background-color: rgba(167, 209, 226, 0.8);
+}
+
+.no-courses {
+    text-align: center;
+    font-size: 20px;
+    color: #999;
+    font-style: italic;
+    padding: 20px;
+}
+
+@media (max-width: 768px) {
+    .card-container{
+        margin-bottom: 350px;
+
+    }
+    .course-card {
+        max-width: 80%;
+        min-height: 200px;
+    }
+
+    .card-header h2 {
+        font-size: 22px;
+    }
+
+    .card-body p {
+        font-size: 16px;
+    }
+
+    .enroll-btn {
+        font-size: 14px;
+        padding: 8px 15px;
+    }
+}
+  
+
+
+</style>
+
+
+        
+
+        
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            <div class="logo-text">
+                <h1>Academia</h1>
+                <p>Learning Portal</p>
+            </div>
+        </div>
+
+        <span class="toggle-btn" id="toggle-btn">
+            <i class="fas fa-bars"></i>
+        </span>
+
+        <ul class="navbar-links" id="navbar-links">
+            <li><a href="{% url 'studenthome' %}">STUDENT HOME</a></li>
+            <li><a href="{% url 'student_assignments' %}"> ASSIGNMENT</a></li>                  
+            <li><a href="{% url 'viewstudentattendance' %}">ATTENDANCE</a></li>
+            <li><a href="{% url 'resetpassword' %}">RESET PASSWORD</a></li>
+            <li><a href="{% url 'logout' %}" class="join-now">LOGOUT</a></li>
+
+</ul>
+    </nav>
+
+
+
+
+        <!-- <div class="card-container">
+            {% for enrollment in enrollments %}
+                <div class="course-card">
+                    <div class="card-header">
+                        <h2>{{ enrollment.course.coursename }}</h2>
+                        <span class="course-duration"><p>Start Date</p>{{ enrollment.course.startdate }}</span>
+    
+                    </div>
+                    <div class="card-body">
+                        <p><strong></strong> </p>
+                        <p>COURSE DURATION:  <strong>{{ enrollment.course.duration }}</strong> Months</p>
+
+                        <p>TEACHER NAME:  <strong>{{ enrollment.course.enrollmentteacher_set.first.teacher.t_user.first_name }} {{ enrollment.course.enrollmentteacher_set.first.teacher.t_user.last_name }}</strong></p>
+
+                    </div>
+                    <div class="card-footer">
+                        <button class="enroll-btn">View Course Details</button>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="no-courses">No courses assigned.</div>
+            {% endfor %}
+        </div> -->
+
+        <div class="card-container">
+            {% for enrollment in enrollments %}
+                <div class="course-card">
+                    <div class="card-header">
+                        <h2>{{ enrollment.course.coursename }}</h2>
+                        <span class="course-duration"><p>Start Date</p>{{ enrollment.course.startdate }}</span>
+                    </div>
+                    <div class="card-body">
+                        <p><strong></strong> </p>
+                        <p>COURSE DURATION: <strong>{{ enrollment.course.duration }}</strong> Months</p>
+                        <p>TEACHER NAME: <strong>{{ enrollment.course.enrollmentteacher_set.first.teacher.t_user.first_name }} {{ enrollment.course.enrollmentteacher_set.first.teacher.t_user.last_name }}</strong></p>
+                        {% if enrollment.course.syllabus_set.exists %}
+                            <p style="text-align: center;"><a style="text-decoration:underline;color: rgb(146, 90, 5);font-weight:600;text-shadow: black;" href="{{ enrollment.course.syllabus_set.first.pdf_file.url }}" target="_blank">DOWNLOAD SYLLABUS</a></p>
+                        {% else %}
+                            <p>No syllabus available for this course yet.</p>
+                        {% endif %}
+                    </div>
+                    <div class="card-footer">
+                        <button class="enroll-btn">View Course Details</button>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="no-courses">No courses assigned.</div>
+            {% endfor %}
+        </div>
+        
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-columns">
+                <div class="footer-column">
+                    <h4>About Us</h4>
+                    <p>We are dedicated to providing quality education.</p>
+                </div>
+                <div class="footer-column">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#contact">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Follow Us</h4>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="footer-bottom">
+                &copy; 2024 Academia. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const toggleBtn = document.getElementById('toggle-btn');
+        const navbarLinks = document.getElementById('navbar-links');
+
+        toggleBtn.addEventListener('click', () => {
+            navbarLinks.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>
